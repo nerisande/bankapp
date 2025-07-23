@@ -5,7 +5,9 @@ services:
     build: .
     ports:
       - "8080:8080"
+    volumes:
+      - ./database:/app/database
     environment:
-      - GO_ENV=production
       - DB_PATH=/app/database/database.db
+      - GO_ENV=production
     restart: unless-stopped

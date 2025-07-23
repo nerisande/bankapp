@@ -5,6 +5,8 @@ package db
 import (
 	"bankapp/app_logic/models"
 	"os"
+	"path/filepath"
+
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
@@ -15,7 +17,10 @@ var DB *gorm.DB
 func Init_db() (*gorm.DB, error) {
 	dbPath := os.Getenv("DB_PATH")
 	if dbPath == "" {
-		dbPath = "database.db"
+		dbPath = "database/database.db"
+	}
+	if err := os.MkdirAll(filepath.Dir(dbPath), os.ModePerm); err != nil {
+		return nil, err
 	}
 	var err error
 	DB, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
